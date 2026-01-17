@@ -1,0 +1,239 @@
+{
+    "id": 56,
+    "employee_unique_id": null,
+    "title": null,
+    "first_name": "Vinay Reddy",
+    "middle_name": null,
+    "last_name": "Reddy",
+    "professional_email": "dbraieatcollege@mailinator.com",
+    "personal_email": null,
+    "phone_number": "9768758758",
+    "password_updated_at": null,
+    "image_path": null,
+    "organization_name": null,
+    "organization_id": 7,
+    "sub_organization_id": 10,
+    "status_id": null,
+    "status": "ACTIVE",
+    "mobile_otp": null,
+    "email_otp": null,
+    "mobile_otp_sent_at": null,
+    "email_otp_sent_at": null,
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRicmFpZWF0Y29sbGVnZUBtYWlsaW5hdG9yLmNvbSIsImlkIjo1NiwidXNlcl90eXBlIjoiRU1QTE9ZRUUiLCJ1c2VyX3JvbGVfaWQiOlszM10sImNyZWF0aW9uRGF0ZVRpbWUiOiIyMDI2LTAxLTE3VDA3OjQ4OjM3LjQzMFoiLCJvcmdhbml6YXRpb25JZCI6NywiaWF0IjoxNzY4NjM2MTE3LCJleHAiOjE3Njg3MjI1MTd9.Y9GNzLKSCyqHiPAhC0PIoE0TN0cN6pVAUjyh0cDjZPM",
+    "login_type": "WEB_APP",
+    "created_at": "2026-01-12T05:24:24.000Z",
+    "updated_at": "2026-01-12T05:24:24.000Z",
+    "created_by": null,
+    "updated_by": null,
+    "is_enabled": true,
+    "is_deleted": false,
+    "role_json": {
+        "permissions": {
+            "create": true,
+            "view": true,
+            "list_view": true,
+            "edit": true,
+            "delete": true
+        },
+        "modules": [
+            {
+                "module_name": "ACADEMICS",
+                "access_type": "FULL_ACCESS",
+                "sub_modules": [
+                    {
+                        "sub_module_name": "ACADEMIC_REGULATIONS",
+                        "access_type": "FULL_ACCESS"
+                    },
+                    {
+                        "sub_module_name": "ACADEMIC_CALENDAR",
+                        "access_type": "FULL_ACCESS"
+                    },
+                    {
+                        "sub_module_name": "ACADEMIC_YEAR",
+                        "access_type": "FULL_ACCESS"
+                    },
+                    {
+                        "sub_module_name": "TIME_TABLE",
+                        "access_type": "FULL_ACCESS"
+                    },
+                    {
+                        "sub_module_name": "SHIFTS",
+                        "access_type": "FULL_ACCESS"
+                    },
+                    {
+                        "sub_module_name": "WEEKOFF",
+                        "access_type": "FULL_ACCESS"
+                    },
+                    {
+                        "sub_module_name": "HOLIDAYS",
+                        "access_type": "FULL_ACCESS"
+                    }
+                ]
+            },
+            {
+                "module_name": "LOOKUP_CODES",
+                "access_type": "FULL_ACCESS",
+                "sub_modules": []
+            },
+            {
+                "module_name": "LOOKUP_TYPES",
+                "access_type": "FULL_ACCESS",
+                "sub_modules": []
+            },
+            {
+                "module_name": "ROLES",
+                "access_type": "FULL_ACCESS",
+                "sub_modules": []
+            },
+            {
+                "module_name": "CLASSES",
+                "access_type": "NO_ACCESS",
+                "sub_modules": []
+            },
+            {
+                "module_name": "EMPLOYEES",
+                "access_type": "FULL_ACCESS",
+                "sub_modules": []
+            },
+            {
+                "module_name": "ORGANIZATIONS",
+                "access_type": "FULL_ACCESS",
+                "sub_modules": [
+                    {
+                        "sub_module_name": "SUB_ORGANIZATIONS",
+                        "access_type": "FULL_ACCESS"
+                    },
+                    {
+                        "sub_module_name": "DESIGNATIONS",
+                        "access_type": "FULL_ACCESS"
+                    },
+                    {
+                        "sub_module_name": "DEPARTMENTS",
+                        "access_type": "FULL_ACCESS"
+                    }
+                ]
+            },
+            {
+                "module_name": "ADMISSIONS",
+                "access_type": "FULL_ACCESS",
+                "sub_modules": [
+                    {
+                        "sub_module_name": "STUDENTS",
+                        "access_type": "FULL_ACCESS"
+                    }
+                ]
+            },
+            {
+                "module_name": "PROFILE",
+                "access_type": "FULL_ACCESS",
+                "sub_modules": []
+            },
+            {
+                "module_name": "COLLEGE_MANAGEMENT_SYSTEM",
+                "access_type": "FULL_ACCESS",
+                "sub_modules": [
+                    {
+                        "sub_module_name": "STREAMS",
+                        "access_type": "FULL_ACCESS"
+                    },
+                    {
+                        "sub_module_name": "COURSES",
+                        "access_type": "FULL_ACCESS"
+                    },
+                    {
+                        "sub_module_name": "SUBJECTS",
+                        "access_type": "FULL_ACCESS"
+                    },
+                    {
+                        "sub_module_name": "ECONTENT",
+                        "access_type": "FULL_ACCESS"
+                    },
+                    {
+                        "sub_module_name": "SECTIONS",
+                        "access_type": "FULL_ACCESS"
+                    }
+                ]
+            },
+            {
+                "module_name": "WEBSITE_MANAGEMENT_SYSTEM",
+                "access_type": "FULL_ACCESS",
+                "sub_modules": [
+                    {
+                        "sub_module_name": "WEBSITES",
+                        "access_type": "FULL_ACCESS"
+                    },
+                    {
+                        "sub_module_name": "COMPONENTS",
+                        "access_type": "NO_ACCESS"
+                    }
+                ]
+            },
+            {
+                "module_name": "LEAVE_MANAGEMENT_SYSTEM",
+                "access_type": "FULL_ACCESS",
+                "sub_modules": [
+                    {
+                        "sub_module_name": "MY_LEAVES",
+                        "access_type": "NO_ACCESS"
+                    },
+                    {
+                        "sub_module_name": "LEAVE_TYPES",
+                        "access_type": "FULL_ACCESS"
+                    },
+                    {
+                        "sub_module_name": "LEAVE_ENTITLEMENTS",
+                        "access_type": "FULL_ACCESS"
+                    },
+                    {
+                        "sub_module_name": "EMPLOYEE_LEAVE_SUMMARY",
+                        "access_type": "FULL_ACCESS"
+                    },
+                    {
+                        "sub_module_name": "TEAM_LEAVES_APPROVAL",
+                        "access_type": "FULL_ACCESS"
+                    },
+                    {
+                        "sub_module_name": "MY_ATTENDANCE",
+                        "access_type": "NO_ACCESS"
+                    }
+                ]
+            }
+        ]
+    },
+    "remaining_count": 4,
+    "onboarding_status": true,
+    "sub_orgs_data": [
+        {
+            "id": 10,
+            "sub_organization_name": "Dr. B.R. Ambedkar Institute of Engineering and Technology",
+            "organization_id": 7,
+            "description": "Dr. B.R. Ambedkar Institute of Engineering and Technology, DBRAIEAT",
+            "sub_organization_code": "DBRAIEAT",
+            "email": "dbraieatcollege@mailinator.com",
+            "contact_number": "96735467890",
+            "status": null,
+            "logo_url": null,
+            "background_image_url": null,
+            "address": "4th Floor,Rajpushpa Enclave,Rajpushpa Towers, Hyderabad, Telangana, 500085.",
+            "land_mark": "Baghlingampally",
+            "city": "Hyderabad",
+            "district": "Hyderabad",
+            "state_name": "Telangana",
+            "country_name": "India",
+            "pincode": "500085",
+            "start_date": "2025-12-31",
+            "created_by": 50,
+            "updated_by": 50,
+            "created_at": "2026-01-12T05:24:24.000Z",
+            "updated_at": "2026-01-12T05:24:24.000Z",
+            "is_enabled": true,
+            "is_deleted": false,
+            "onboarding_status": false,
+            "sub_organization_short_name": null,
+            "employee_id": 56,
+            "employee_email": "dbraieatcollege@mailinator.com",
+            "employee_phone_number": "9768758758"
+        }
+    ],
+    "org_level_user": 0
+}

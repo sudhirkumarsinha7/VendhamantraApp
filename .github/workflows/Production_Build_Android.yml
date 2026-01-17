@@ -1,0 +1,185 @@
+name: Android Production APK - Atum analytics
+
+env:
+  # The name of the main module repository
+  main_project_module: main
+
+  # The name of the Play Store
+  playstore_name: Atum analytics
+
+on:
+
+  workflow_dispatch:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v3
+
+      # Set Current Date As Env Variable
+      - name: Set current date as env variable
+        run: echo "date_today=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+      - name: Clear Metro cache directory
+        run: sudo rm -rf /tmp/metro-cache || true
+
+      # Set Repository Name As Env Variable
+      - name: Set repository name as env variable
+        run: echo "repository_name=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')" >> $GITHUB_ENV
+      
+      - name: Bump Android version in app_version.json
+        id: bump_android_version
+        run: |
+            VERSION_FILE="app_version.json"
+
+            if [ ! -f "$VERSION_FILE" ]; then
+              echo "app_version.json not found!"
+              exit 1
+            fi
+
+            CURRENT_VERSION_NAME=$(jq -r '.android.version_name' "$VERSION_FILE")
+            ANDROID_VERSION_CODE=$(jq -r '.android.version_code' "$VERSION_FILE")
+
+            echo "Current version_name: $CURRENT_VERSION_NAME"
+            echo "Android version_code: $ANDROID_VERSION_CODE"
+
+            IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION_NAME"
+
+            MAJOR=$((10#$MAJOR))
+            MINOR=$((10#$MINOR))
+            PATCH=$((10#$PATCH))
+
+            PATCH=$((PATCH + 1))
+            if [ "$PATCH" -gt 99 ]; then
+              PATCH=0
+              MINOR=$((MINOR + 1))
+            fi
+            if [ "$MINOR" -gt 99 ]; then
+              MINOR=0
+              MAJOR=$((MAJOR + 1))
+            fi
+
+            NEW_VERSION_NAME=$(printf "%d.%02d.%02d" "$MAJOR" "$MINOR" "$PATCH")
+            NEW_ANDROID_VERSION_CODE=$((ANDROID_VERSION_CODE + 1))
+
+            echo "New version_name: $NEW_VERSION_NAME"
+            echo "New Android version_code: $NEW_ANDROID_VERSION_CODE"
+
+            # Update only android.version_code and version_name fields
+            jq --arg vn "$NEW_VERSION_NAME" \
+              --argjson avc "$NEW_ANDROID_VERSION_CODE" \
+              '.version_name = $vn
+                | .android.version_name = $vn
+                | .android.version_code = $avc' \
+              "$VERSION_FILE" > tmp.$$.json && mv tmp.$$.json "$VERSION_FILE"
+
+            echo "new_version=$NEW_VERSION_NAME" >> $GITHUB_ENV
+            echo "new_android_version_code=$NEW_ANDROID_VERSION_CODE" >> $GITHUB_ENV
+      - name: Check android/app directory contents
+        run: ls -l android/app
+
+      - name: Update Android version in build.gradle
+        run: |
+          sed -i -E "s/versionCode [0-9]+/versionCode ${{ env.new_android_version_code }}/" android/app/build.gradle
+          sed -i -E "s/versionName \"[^\"]+\"/versionName \"${{ env.new_version }}\"/" android/app/build.gradle
+
+      - name: Create .env file
+        run: |
+          cat <<EOF > .env
+          REACT_APP_BASE_DOMAIN='${{ secrets.BASE_DOMAIN_NON_PROD }}'
+          REACT_APP_GLOBAL_DOMAIN='${{ secrets.GLOBAL_DOMAIN_NON_PROD }}'
+          REACT_APP_IMG_DOMAIN='${{ secrets.IMG_DOMAIN_NON_PROD }}'
+          REACT_APP_CONTAINER_NAME='${{ secrets.ASSET_CONTAINER_NAME_NON_PROD }}'
+          REACT_APP_IS_STAGING=true
+          REACT_APP_PG_MERCHANT_ID='${{ secrets.PAYTM_MERCHANT_ID_NON_PROD }}'
+          REACT_APP_PG_MERCHANT_KEY='${{ secrets.PAYTM_MERCHANT_KEY_NON_PROD }}'
+          REACT_APP_PG_CALLBACK_URL='${{ secrets.PAYTM_CALLBACK_URL_NON_PROD }}'
+          REACT_APP_PG_HOST_NAME='${{ secrets.PAYTM_HOST_NAME_NON_PROD }}'
+          REACT_APP_PG_MERCHANT_URL='${{ secrets.PAYTM_MERCHANT_URL_NON_PROD }}'
+          REACT_APP_API_URL='${{ secrets.API_URL_PROD }}'
+          REACT_APP_SERVICES_API_URL='${{ secrets.SERVICES_URL_PROD }}'
+          REACT_APP_IMAGE_API_URL='${{ secrets.IMAGE_URL_PROD }}'
+          REACT_APP_GOOGLE_MAPS_API_KEY='${{ secrets.REACT_APP_GOOGLE_MAPS_API_KEY }}'
+          REACT_APP_USER_GUIDE='${{ secrets.API_USER_GUIDE_PROD }}'
+
+          EOF
+      - name: Setup .env file
+        run: |
+          cp ".env" "./android/.env"
+          ENVFILE=.env
+          
+      - name: Set Up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu' # See 'Supported distributions' for available options
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Set up Node.js version
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22.x'
+      - name: Install react packages
+        run: npm install --force
+
+  
+      - name: Change wrapper permissions
+        run: |
+          cd android
+          chmod +x ./gradlew
+      - name: Clean native build folders
+        run: |
+          rm -rf android/app/.cxx
+          rm -rf android/.cxx
+          rm -rf android/app/build
+     
+      - name: Clean gradle project
+        run: |
+          cd android
+          ./gradlew clean
+      # - name: Bundle RN Android assets
+      #   run: |
+      #     ENVFILE=.env
+      #     npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
+
+      # - name: Clean up after bundling
+      #   run: rm -rf ./android/app/src/main/res/drawable-* && rm -rf ./android/app/src/main/res/raw
+      # Create APK Release
+      - name: Build apk release project (APK)
+        run: |
+          cd android
+          ./gradlew assemble
+
+     
+      # Noted For Output [main_project_module]/build/outputs/apk/release/
+      - name: Upload APK Release
+        uses: actions/upload-artifact@v4
+        with:
+          name: ReleaseAPK
+          path: ./android/app/build/outputs/apk/release/**
+
+     
+      - name: Clean up node_modules to free space
+        if: always()
+        run: rm -rf node_modules
+
+      - name: Clean up Gradle and npm cache
+        if: always()
+        run: |
+          rm -rf ~/.gradle/caches
+          rm -rf ~/.npm
+      - name: Clean native build folders
+        run: |
+          rm -rf android/app/.cxx
+          rm -rf android/.cxx
+          rm -rf android/app/build
+          rm -rf atumanalyticsmobileapp
+      - name: Show disk usage after build
+        run: df -h    
+
+      
