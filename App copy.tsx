@@ -1,42 +1,31 @@
-import 'react-native-gesture-handler';
-import 'react-native-get-random-values';
-import React, { useEffect } from 'react';
-import { StatusBar } from 'react-native';
-import { Provider } from 'react-redux';
-import { AppProvider } from './src/context/AppContext';
-import { AuthProvider } from './src/context/AuthContext';
-import { NetworkProvider } from './src/context/NetworkContext';
-import { store } from './src/store/store';
-import { CustomToast } from './src/components/ui/CustomToastmessage';
+import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { NavigationContainer } from '@react-navigation/native';
+import { Provider } from 'react-redux';
+import { StatusBar } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
+import { store } from './src/store/store';
 import AppNavigator from './src/navigation/AppNavigator';
-import { ForceUpdateWrapper } from './src/components/wrappers/ForceUpdateWrapper';
-import { NotificationProvider } from './src/context/NotificationContext';
-// import { LocationTrackingProvider } from './src/context/LocationTrackingContext'
+// import { ThemeProvider } from './src/context/ThemeContext';
 
-
-const App: React.FC = () => {
-  
-
+const App = () => {
   return (
-        <Provider store={store}>
-
+    <Provider store={store}>
       <SafeAreaProvider>
-          {/* <AppProvider> */}
-            {/* <NetworkProvider> */}
-              {/* <AuthProvider> */}
-                {/* <ForceUpdateWrapper> */}
-                  {/* <LocationTrackingProvider> */}
-                  <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
-                  <AppNavigator />
-                  <CustomToast />
-                  {/* </LocationTrackingProvider> */}
-                {/* </ForceUpdateWrapper> */}
-              {/* </AuthProvider> */}
-            {/* </NetworkProvider> */}
-          {/* </AppProvider> */}
+        {/* <ThemeProvider> */}
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <NavigationContainer>
+              <StatusBar
+                barStyle="dark-content"
+                backgroundColor="#ffffff"
+              />
+              <AppNavigator />
+            </NavigationContainer>
+          </GestureHandlerRootView>
+        {/* </ThemeProvider> */}
       </SafeAreaProvider>
-      </Provider>
+    </Provider>
   );
 };
 

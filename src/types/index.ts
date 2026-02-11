@@ -170,3 +170,111 @@ export interface CalendarDayData {
   year: number;
   timestamp: number;
 }
+
+
+export interface Puja {
+  id: string;
+  name: string;
+  description: string;
+  shortDescription: string;
+  price: number;
+  originalPrice?: number;
+  duration: string; // e.g., "2 hours"
+  category: 'general' | 'dosha' | 'vamachara' | 'special';
+  type: 'homam' | 'puja' | 'archana' | 'yagya';
+  deity: string;
+  benefits: string[];
+  requirements?: string[];
+  inclusions: {
+    prasadam: boolean;
+    videoRecording: boolean;
+    liveStream: boolean;
+    certificate: boolean;
+    priest: boolean;
+    materials: boolean;
+  };
+  schedule: {
+    date: string;
+    time: string;
+    availableSlots: number;
+  };
+  priest: {
+    id: string;
+    name: string;
+    experience: number;
+    rating: number;
+    languages: string[];
+  };
+  temple?: {
+    id: string;
+    name: string;
+    location: string;
+    city: string;
+  };
+  images: string[];
+  isFeatured: boolean;
+  isAvailable: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface PujaBooking {
+  id: string;
+  pujaId: string;
+  userId: string;
+  devoteeDetails: {
+    fullName: string;
+    gotra: string;
+    nakshatra: string;
+    rashi: string;
+    birthPlace: string;
+    birthTime: string;
+    specialRequests?: string;
+  };
+  bookingDetails: {
+    date: string;
+    time: string;
+    timezone: string;
+    numberOfDevotees: number;
+    isGift: boolean;
+    giftReceiver?: {
+      name: string;
+      email: string;
+      phone: string;
+      message?: string;
+    };
+  };
+  payment: {
+    amount: number;
+    currency: string;
+    status: 'pending' | 'completed' | 'failed' | 'refunded';
+    razorpayOrderId?: string;
+    razorpayPaymentId?: string;
+    razorpaySignature?: string;
+  };
+  status: 'pending' | 'confirmed' | 'in_progress' | 'completed' | 'cancelled';
+  updates: {
+    type: 'scheduled' | 'started' | 'completed' | 'video_ready' | 'prasad_dispatched';
+    message: string;
+    timestamp: string;
+  }[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface PujaCategory {
+  id: string;
+  name: string;
+  icon: string;
+  description: string;
+  count: number;
+}
+
+export interface PujaFilter {
+  category?: string[];
+  priceRange?: [number, number];
+  date?: string;
+  deity?: string[];
+  availableOnly?: boolean;
+  featuredOnly?: boolean;
+}
